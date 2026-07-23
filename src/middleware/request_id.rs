@@ -8,9 +8,9 @@ pub async fn request_id(mut request: Request, next: Next) -> Response {
 
     let mut response = next.run(request).await;
 
-    response
-        .headers_mut()
-        .insert("x-request-id", request_id.to_string().parse().unwrap());
+    if let Ok(value) = request_id.to_string().parse() {
+        response.headers_mut().insert("x-request-id", value);
+    }
 
     response
 }
